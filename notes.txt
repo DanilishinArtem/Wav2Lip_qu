@@ -1,0 +1,68 @@
+Что можно применить к Wav2Lip:
+✅ 1. Квантование (Post-training или Quantization-aware training)
+Поскольку модель уже обучена, начнем с Post-training quantization:
+
+python
+Копировать
+Редактировать
+import torch
+from torch.quantization import quantize_dynamic
+
+model = Wav2Lip()
+model.load_state_dict(torch.load("..."))  # Подгружаем веса
+
+# Применяем динамическое квантование к Linear и Conv слоям
+quantized_model = quantize_dynamic(
+    model, 
+    {torch.nn.Conv2d, torch.nn.Linear}, 
+    dtype=torch.qint8
+)
+✅ 2. Прореживание каналов (Channel Pruning)
+Для CNN это значит уменьшить число фильтров (каналов) в каждом слое. Например, уменьшить в 2 раза:
+
+Пример для одного блока:
+
+python
+Копировать
+Редактировать
+# Было:
+Conv2d(64, 128, kernel_size=3)
+
+# Стало:
+Conv2d(64, 64, kernel_size=3)
+Чтобы автоматизировать:
+
+python
+Копировать
+Редактировать
+def slim_conv(conv_layer, factor=0.5):
+    in_c = conv_layer.in_channels
+    out_c = int(conv_layer.out_channels * factor)
+    new_conv = torch.nn.Conv2d(in_c, out_c, conv_layer.kernel_size,
+                               stride=conv_layer.stride,
+                               padding=conv_layer.padding)
+    return new_conv
+✅ 3. Слияние Conv+BatchNorm (Fusion)
+Torch поддерживает torch.quantization.fuse_modules, можно слить Conv2d + BatchNorm + ReLU:
+
+python
+Копировать
+Редактировать
+from torch.quantization import fuse_modules
+
+for i, block in enumerate(model.face_encoder_blocks):
+    if isinstance(block, torch.nn.Sequential):
+        fused_block = fuse_modules(block, [['0.conv_block.0', '0.conv_block.1', '0.act']])
+        model.face_encoder_blocks[i] = fused_block
+✅ 4. Distillation (опционально, при переобучении)
+Если ты хочешь переобучить меньшую версию Wav2Lip, можно взять teacher (исходную модель) и обучать student по логитам.
+
+📦 Итог: базовая компрессия
+Если ты хочешь просто сжать без дообучения, рекомендую такую последовательность:
+
+python
+Копировать
+Редактировать
+# 1. Слияние Conv+BN+ReLU
+# 2. Квантование (Post-training, qint8 или float16)
+# 3. (опционально) Прореживание (уменьшение числа каналов в Conv)

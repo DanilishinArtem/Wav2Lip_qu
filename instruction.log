@@ -1,0 +1,4 @@
+python inference.py --checkpoint_path <ckpt> --face <video.mp4> --audio <an-audio-source> 
+
+
+python inference.py --checkpoint_path /home/adanilishin/wav2lip/ckpt --face /home/adanilishin/wav2lip/inputs_files_audio_video/video_one.mp4 --audio /home/adanilishin/wav2lip/inputs_files_audio_video/audio.wav
