@@ -1,0 +1,31 @@
+-------------------------------------------- MEMORY ONNX --------------------------------------------
+
+FP32:
+    Baseline: Size of baseline.onnx = 138.43271446228027 mb
+    Quant:
+
+FP16:
+    Baseline: Size of baseline.onnx = 69.23794937133789 mb
+    Quant: Size of quant.onnx = 456.77652168273926 mb
+    Optimization:
+        Size of quant.onnx = 456.776517868042 mb ---> removed weights
+        Size of quant.onnx = 456.776517868042 mb
+        Size of quant.onnx = 456.776517868042 mb
+        Size of quant.onnx = 413.78897762298584 mb ---> optimization in unpack function
+        Size of quant.onnx = 413.7889156341553 mb
+
+-------------------------------------------- MEMORY DEVICE --------------------------------------------
+Batch size (1):
+    Baseline: Peak memory (MB): 80.94140625
+    Quant_v1: Peak memory (MB): 60.87109375
+    Quant_v2: Peak memory (MB): 59.2802734375
+
+Batch size (8):
+    Baseline: Peak memory (MB): 116.51318359375
+    Quant_v1: Peak memory (MB): 94.6767578125
+    Quant_v2: Peak memory (MB): 81.44921875
+
+Batch size (512):
+    Baseline: Peak memory (MB): 2934.95458984375
+    Quant_v1: Peak memory (MB): 2913.7900390625
+    Quant_v2: Peak memory (MB): 2900.1875

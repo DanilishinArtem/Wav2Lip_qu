@@ -1,0 +1,27 @@
+-------------------------------------------- MEMORY ONNX --------------------------------------------
+
+Batch size (1):
+    Baseline: Size of baseline.onnx = 69.23794937133789 mb
+    Quant: Size of quant.onnx = 27.719202041625977 mb
+
+Batch size (4):
+    Baseline: Size of baseline.onnx = 69.23794937133789 mb
+    Quant: Size of quant.onnx = 27.6992130279541 mb
+
+Batch size (512):
+    Baseline: Size of baseline.onnx = 69.23794937133789 mb
+    Quant: Size of quant.onnx = 27.702192306518555 mb
+
+-------------------------------------------- MEMORY DEVICE --------------------------------------------
+Batch size (1):
+    Baseline: Peak memory (MB): 80.94140625
+    Quant: Peak memory (MB): 54.669921875
+
+Batch size (4):
+    Baseline: Peak memory (MB): 93.85888671875
+    Quant: Peak memory (MB): 58.88818359375
+
+Batch size (8):
+    Baseline: Peak memory (MB): 116.51318359375
+    Quant: Peak memory (MB): 80.73974609375
+

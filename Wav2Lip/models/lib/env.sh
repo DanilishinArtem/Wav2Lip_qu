@@ -1,0 +1,1 @@
+export PYTHONPATH="/home/adanilishin/wav2lip/Wav2Lip/models"
