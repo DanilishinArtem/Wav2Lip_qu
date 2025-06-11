@@ -39,6 +39,9 @@ def get_model_data():
         model = model.half()
         mel = mel.half()
         face = face.half()
+    else:
+        mel = mel.to(torch.float32)
+        face = face.to(torch.float32)
     model = model.to(Config.device)
     mel = mel.to(Config.device)
     face = face.to(Config.device)
